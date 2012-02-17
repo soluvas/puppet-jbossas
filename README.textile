@@ -21,12 +21,12 @@ bc. include jboss-as
 
 Available parameters and their default values:
 
-* $version = '7.1.0.Final'
-* $mirror_url = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
-* $http_port = 8080
-* $https_port = 8443
+* @version@ = '7.1.0.Final'
+* @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
+* @http_port@ = 8080
+* @https_port@ = 8443
 
-You can use your own mirror, can be HTTP, FTP, filesystem, or anything support by @curl@:
+You can use your own mirror, can be HTTP, FTP, filesystem, or anything supported by @curl@:
 
 bc. class { jboss-as:
 	mirror_url => 'file:///home/ceefour/Public/'
