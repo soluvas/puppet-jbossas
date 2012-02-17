@@ -55,15 +55,15 @@ class jboss-as ($version = '7.1.0.Final',
 	notice "JBoss AS directory: $jboss_home"
 	exec { "/bin/tar -xzv -f '$dist_file'":
 		creates => "/home/jbossas/jboss-as-${version}",
-		user => 'jbossas',
 		cwd => '/home/jbossas',
+		user => 'jbossas', group => 'jbossas',
 		logoutput => true,
 		unless => "/usr/bin/test -d '$jboss_home'"
 	}
 	exec { "/bin/mv -v 'jboss-as-${version}' jboss-as":
 		creates => $jboss_home,
-		user => 'jbossas',
 		cwd => '/home/jbossas',
+		user => 'jbossas', group => 'jbossas',
 		logoutput => true,
 	}
 	
