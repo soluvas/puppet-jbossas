@@ -124,12 +124,14 @@ class jbossas ($version = '7.1.0.Final',
 		user => 'jbossas',
 		cwd => $dir,
 		logoutput => true,
-		require => Class['jbossas::install']
+		require => Class['jbossas::install'],
+		notify => Service['jboss-as']
 	}
 	exec { "/bin/sed -i -e 's/socket-binding name=\"https\" port=\"[0-9]\\+\"/socket-binding name=\"https\" port=\"${https_port}\"/' standalone/configuration/standalone.xml":
 		user => 'jbossas',
 		cwd => $dir,
 		logoutput => true,
-		require => Class['jbossas::install']
+		require => Class['jbossas::install'],
+		notify => Service['jboss-as']
 	}
 }
