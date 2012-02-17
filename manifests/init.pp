@@ -20,6 +20,7 @@ class jbossas ($version = '7.1.0.Final',
 	# Mirror URL with trailing slash
 	# Will use curl to download, so 'file:///' is also possible not just 'http://'
 	$mirror_url = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/',
+	$bind_address = '127.0.0.1',
 	$http_port = 8080,
 	$https_port = 8443)
 {
@@ -114,8 +115,11 @@ class jbossas ($version = '7.1.0.Final',
 	include install
 	include initd
 	
+	# Configure
+	notice "Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
+	# TODO: Set bind address
+	
 	# Set ports
-	notice "HTTP Port: $http_port - HTTPS Port: $https_port"
 	exec { "/bin/sed -i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml":
 		user => 'jbossas',
 		cwd => $dir,
