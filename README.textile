@@ -17,7 +17,19 @@ bc. package { curl: ensure => installed }
 
 h2. Usage
 
-Use defaults:
+Typical production settings:
+
+bc. 
+class { jbossas:
+	bind_address => '0.0.0.0'
+}
+service { jboss-as:
+	enable => true,
+	ensure => running,
+	require => Class['jbossas']
+}
+
+Typical development settings:
 
 bc. 
 class { jbossas: }
@@ -31,6 +43,7 @@ Available parameters and their default values:
 
 * @version@ = '7.1.0.Final'
 * @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
+* @bind_address@ = '127.0.0.1'
 * @http_port@ = 8080
 * @https_port@ = 8443
 
@@ -43,4 +56,6 @@ bc. class { jbossas:
 Recommended configuration for Soluvas & Bippo:
 
 bc. class { jbossas:
-	http_port => 9080, https_port => 9443 }
+	http_port => 9080,
+	https_port => 9443
+}

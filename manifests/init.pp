@@ -5,6 +5,7 @@
 # Parameters:
 # * @version@ = '7.1.0.Final'
 # * @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
+# * @bind_address@ = '127.0.0.1'
 # * @http_port@ = 8080
 # * @https_port@ = 8443
 #
@@ -89,12 +90,14 @@ class jbossas ($version = '7.1.0.Final',
 
 	# init.d configuration for Ubuntu
 	class initd {
+		$jbossas_bind_address = $jbossas::bind_address
+		
 		file { '/etc/jboss-as':
 			ensure => directory,
 			owner => 'root', group => 'root'
 		}
 		file { '/etc/jboss-as/jboss-as.conf':
-			source => 'puppet:///modules/jbossas/init.d/jboss-as.conf',
+			content => template('jbossas/jboss-as.conf.erb'),
 			owner => 'root', group => 'root',
 			mode => 0644,
 			require => File['/etc/jboss-as']
@@ -117,9 +120,6 @@ class jbossas ($version = '7.1.0.Final',
 	
 	# Configure
 	notice "Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
-	# TODO: Set bind address
-	
-	# Set ports
 	exec { "/bin/sed -i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml":
 		user => 'jbossas',
 		cwd => $dir,
