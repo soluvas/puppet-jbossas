@@ -21,7 +21,7 @@ class jboss-as ($version = '7.1.0.Final',
 	# file:///together/Technology/Servers/JBoss/jboss-as-7.1.0.Final.tar.gz
 	#$mirror_url = 'file:///together/Technology/Servers/JBoss/'
 	$mirror_url_version = "${mirror_url}jboss-as-${version}.tar.gz"
-	$dist_dir = '/tmp'
+	$dist_dir = '/home/jbossas/tmp'
 	$dist_file = "${dist_dir}/jboss-as-${version}.tar.gz"
 
 	# Create group, user, and home folder
@@ -53,6 +53,11 @@ class jboss-as ($version = '7.1.0.Final',
 	# Extract the JBoss AS distribution
 	$jboss_home = "/home/jbossas/jboss-as"
 	notice "JBoss AS directory: $jboss_home"
+	file { $dist_dir:
+		ensure => directory,
+		owner => 'jbossas', group => 'jbossas',
+		mode => 0775,
+	}
 	exec { "/bin/tar -xzv -f '$dist_file'":
 		creates => "/home/jbossas/jboss-as-${version}",
 		cwd => '/home/jbossas',
