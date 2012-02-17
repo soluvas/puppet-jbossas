@@ -59,3 +59,19 @@ bc. class { jbossas:
 	http_port => 9080,
 	https_port => 9443
 }
+
+h2. Virtual Server
+
+Example:
+
+bc. jbossas::virtual_server { satukancinta:
+	default_web_module => 'satukancinta-web',
+	aliases => ['satukancinta.dev', 'www.satukancinta.dev'],
+	ensure => 'present'
+}
+
+Note that you still need to have @WEB-INF/jboss-web.xml@ in your webapp containing:
+
+bc. <jboss-web>
+	<virtual-host>satukancinta</virtual-host>
+</jboss-web>
