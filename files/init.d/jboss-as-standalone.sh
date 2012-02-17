@@ -68,7 +68,7 @@ start() {
   #echo "JBoss AS user: $JBOSS_USER"
   #echo "JBoss AS PID file: $JBOSS_PIDFILE"
   
-  log_daemon_msg "Starting Java EE Application Server: " "$prog"
+  log_daemon_msg "Starting Java EE Application Server" "$prog"
   if [ -f $JBOSS_PIDFILE ]; then
     read ppid < $JBOSS_PIDFILE
     if [ `ps --pid $ppid 2> /dev/null | grep -c $ppid 2> /dev/null` -eq '1' ]; then
@@ -116,7 +116,7 @@ start() {
 }
 
 stop() {
-  log_daemon_msg "Stopping Java EE Application Server: " "$prog"
+  log_daemon_msg "Stopping Java EE Application Server" "$prog"
   count=0;
 
   if [ -f $JBOSS_PIDFILE ]; then
