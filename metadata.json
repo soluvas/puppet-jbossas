@@ -1,5 +1,5 @@
 {
-  "name": "ceefour-jboss-as",
+  "name": "ceefour-jbossas",
   "author": "ceefour",
   "description": "",
   "license": "",
@@ -8,7 +8,7 @@
   "summary": "",
   "version": "",
   "checksums": {
-    "Modulefile": "f3ebbb8f5332f0aa7e557e5078cd20ec",
+    "Modulefile": "c81d5d1317a3f74f39d13a6c11422655",
     "README.textile": "66a67c3b645df231a2414ff7b7f4c332",
     "files/init.d/jboss-as-standalone.sh": "8550d91aa6a98124b9dc653fde6f7b20",
     "manifests/init.pp": "2b295fddc28ed7969bfb107332cd42c8",

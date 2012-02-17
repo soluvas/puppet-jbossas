@@ -1,11 +1,9 @@
-name    'ceefour-jboss-as'
+name 'ceefour-jbossas'
 version ''
-source ''
+
 author 'ceefour'
 license ''
+project_page ''
+source ''
 summary ''
 description ''
-project_page ''
-
-## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
