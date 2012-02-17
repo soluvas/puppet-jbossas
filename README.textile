@@ -5,7 +5,35 @@ h2. Installation
 1. Clone from git
 2. Make a symlink in @/etc/puppet/modules/jboss-as@ -> @/home/ceefour/git/puppet-jboss-as@
 
+h2. Dependencies
+
+h3. curl package
+
+You need to have @curl@ installed:
+
+bc. package { curl: ensure => installed }
+
 h2. Usage
 
-bc. sudo puppet apply --verbose -e 'include jboss-as'
+Use defaults:
 
+bc. include jboss-as
+
+Available parameters and their default values:
+
+* $version = '7.1.0.Final'
+* $mirror_url = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
+* $http_port = 8080
+* $https_port = 8443
+
+You can use your own mirror, can be HTTP, FTP, filesystem, or anything support by @curl@:
+
+bc. class { jboss-as:
+	mirror_url => 'file:///home/ceefour/Public/'
+}
+
+Recommended configuration for Soluvas & Bippo:
+
+bc. class { jboss-as:
+	mirror_url => 'file:///home/ceefour/Public/',
+	http_port => 9080, https_port => 9443 }
