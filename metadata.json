@@ -8,11 +8,8 @@
   "summary": "",
   "version": "",
   "checksums": {
-    "9080,": "d41d8cd98f00b204e9800998ecf8427e",
-    "9443": "d41d8cd98f00b204e9800998ecf8427e",
     "Modulefile": "f3ebbb8f5332f0aa7e557e5078cd20ec",
-    "README.textile": "3dacf9bb37932372cf8d3db550c9876a",
-    "installed": "d41d8cd98f00b204e9800998ecf8427e",
+    "README.textile": "6343ff0a92d1f3611bdc98c40f992c33",
     "manifests/init.pp": "65527f53cc144136d691cbbba620d11f",
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
     "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",

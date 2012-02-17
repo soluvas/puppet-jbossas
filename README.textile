@@ -1,6 +1,6 @@
 h1. JBoss AS Puppet Module
 
-"soluvas/puppet-jboss-as Project on GitHub":https://github.com/soluvas/puppet-jbossas
+"soluvas/puppet-jbossas Project on GitHub":https://github.com/soluvas/puppet-jbossas
 
 h2. Installation
 
