@@ -9,7 +9,7 @@
   "version": "",
   "checksums": {
     "Modulefile": "c81d5d1317a3f74f39d13a6c11422655",
-    "README.textile": "4490bb619a786c35f29808017b2092c9",
+    "README.textile": "c56d46bddc612da574a5fa2f268cb575",
     "files/init.d/jboss-as-standalone.sh": "8550d91aa6a98124b9dc653fde6f7b20",
     "manifests/init.pp": "d8fa85eded757e311ec77e2951b1a2ad",
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
