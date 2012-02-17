@@ -108,10 +108,6 @@ class jbossas ($version = '7.1.0.Final',
 			owner => 'root', group => 'root',
 			mode => 0755
 		}
-		service { 'jboss-as':
-			enable => true,
-			require => File['/etc/init.d/jboss-as']
-		}
 	}
 	Class['install'] -> Class['initd']		
 	

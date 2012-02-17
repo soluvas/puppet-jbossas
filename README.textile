@@ -19,7 +19,13 @@ h2. Usage
 
 Use defaults:
 
-bc. include jbossas
+bc. 
+class { jbossas: }
+service { jboss-as:
+	enable => true,
+	ensure => running,
+	require => Class['jbossas']
+}
 
 Available parameters and their default values:
 
@@ -37,5 +43,4 @@ bc. class { jbossas:
 Recommended configuration for Soluvas & Bippo:
 
 bc. class { jbossas:
-	mirror_url => 'file:///home/ceefour/Public/',
 	http_port => 9080, https_port => 9443 }
