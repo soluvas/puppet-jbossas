@@ -89,10 +89,12 @@ class jbossas ($version = '7.1.0.Final',
 	# init.d configuration for Ubuntu
 	class initd {
 		file { '/etc/jboss-as':
-			ensure => directory
+			ensure => directory,
+			owner => 'root', group => 'root'
 		}
 		file { '/etc/jboss-as/jboss-as.conf':
 			source => 'puppet:///modules/jbossas/init.d/jboss-as.conf',
+			owner => 'root', group => 'root',
 			mode => 0644,
 			require => File['/etc/jboss-as']
 		}
@@ -103,6 +105,7 @@ class jbossas ($version = '7.1.0.Final',
 		}
 		file { '/etc/init.d/jboss-as':
 			source => 'puppet:///modules/jbossas/init.d/jboss-as-standalone.sh',
+			owner => 'root', group => 'root',
 			mode => 0755
 		}
 		service { 'jboss-as':

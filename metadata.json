@@ -12,7 +12,7 @@
     "README.textile": "6343ff0a92d1f3611bdc98c40f992c33",
     "files/init.d/jboss-as-standalone.sh": "ceb28839715f195e86a4265773cf6157",
     "files/init.d/jboss-as.conf": "7f0efd3bcd0ed90d6088c17d5dd524eb",
-    "manifests/init.pp": "60866408e021109269e46ffaacd83f47",
+    "manifests/init.pp": "33d0fc1c546c7d40a402b582ed1a27bc",
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
     "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
     "tests/init.pp": "650aa17bc86d524780ea9dbd358b5e38"
