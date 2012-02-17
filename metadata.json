@@ -1,0 +1,19 @@
+{
+  "name": "ceefour-jboss-as",
+  "author": "ceefour",
+  "description": "",
+  "license": "",
+  "project_page": "",
+  "source": "",
+  "summary": "",
+  "version": "",
+  "checksums": {
+    "Modulefile": "f3ebbb8f5332f0aa7e557e5078cd20ec",
+    "README.textile": "47324e2cce5db529ef4eb1b1d1ff1bc6",
+    "manifests/init.pp": "72f66718cfa6c55c7988e21fcace947b",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
+    "tests/init.pp": "650aa17bc86d524780ea9dbd358b5e38"
+  },
+  "dependencies": []
+}

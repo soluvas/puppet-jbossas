@@ -1,0 +1,11 @@
+h1. jboss-as
+
+h2. Installation
+
+1. Clone from git
+2. Make a symlink in @/etc/puppet/modules/jboss-as@ -> @/home/ceefour/git/puppet-jboss-as@
+
+h2. Usage
+
+bc. sudo puppet apply --verbose -e 'include jboss-as'
+
