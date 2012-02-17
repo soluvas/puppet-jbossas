@@ -1,11 +1,11 @@
 h1. JBoss AS Puppet Module
 
-"soluvas/puppet-jboss-as Project on GitHub":https://github.com/soluvas/puppet-jboss-as
+"soluvas/puppet-jboss-as Project on GitHub":https://github.com/soluvas/puppet-jbossas
 
 h2. Installation
 
-1. Clone from git: @git://github.com/soluvas/puppet-jboss-as.git@
-2. Make a symlink in @/etc/puppet/modules/jbossas@ -> @/home/ceefour/git/puppet-jboss-as@
+1. Clone from git: @git://github.com/soluvas/puppet-jbossas.git@
+2. Make a symlink in @/etc/puppet/modules/jbossas@ -> @/home/ceefour/git/puppet-jbossas@
 
 h2. Dependencies
 
