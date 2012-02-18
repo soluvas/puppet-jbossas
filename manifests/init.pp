@@ -53,7 +53,8 @@ class jbossas ($version = '7.1.0.Final',
 		}
 		
 		# Download the JBoss AS distribution ~100MB file
-		exec { "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'":
+		exec { download_jboss_as:
+			command => "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'",
 			creates => $dist_file,
 			user => 'jbossas',
 			logoutput => true,
@@ -66,24 +67,25 @@ class jbossas ($version = '7.1.0.Final',
 			owner => 'jbossas', group => 'jbossas',
 			mode => 0775,
 		}
-		exec { 'extract jboss':
+		exec { extract_jboss_as:
 			command => "/bin/tar -xz -f '$dist_file'",
 			creates => "/home/jbossas/jboss-as-${jbossas::version}",
 			cwd => '/home/jbossas',
 			user => 'jbossas', group => 'jbossas',
 			logoutput => true,
-			unless => "/usr/bin/test -d '$jbossas::dir'"
+			unless => "/usr/bin/test -d '$jbossas::dir'",
+			require => Exec['download_jboss_as']
 		}
-		exec { 'rename jboss_home':
+		exec { move_jboss_home:
 			command => "/bin/mv -v '/home/jbossas/jboss-as-${jbossas::version}' '${jbossas::dir}'",
 			creates => $jbossas::dir,
 			logoutput => true,
-			require => Exec['extract jboss']
+			require => Exec['extract_jboss_as']
 		}
 		file { "$jbossas::dir":
 			ensure => directory,
 			owner => 'jbossas', group => 'jbossas',
-			require => Exec['rename jboss_home']
+			require => Exec['move_jboss_home']
 		}
 		
 	}
@@ -147,7 +149,7 @@ class jbossas ($version = '7.1.0.Final',
 				} else {
 					$cli_args = inline_template("<% require 'json' %>alias=<%= aliases.to_json %>")
 				}
-				notice "$jbossas::dir/bin/jboss-cli.sh -c --command='/subsystem=web/virtual-server=$name:add\($cli_args\)'"
+				notice "$jbossas::dir/bin/jboss-cli.sh -c --command='/subsystem=web/virtual-server=$name:add\\($cli_args\\)'"
 				exec { "add jboss virtual-server $name":
 					command => "$jbossas::dir/bin/jboss-cli.sh -c --command=/subsystem=web/virtual-server=$name:add\\($cli_args\\)",
 					user => 'jbossas', group => 'jbossas',
