@@ -127,13 +127,15 @@ class jbossas ($version = '7.1.0.Final',
 		cwd => $dir,
 		logoutput => true,
 		require => Class['jbossas::install'],
-		notify => Service['jboss-as']
+		unless => "/bin/grep 'socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml",
+		notify => Service['jboss-as'],
 	}
 	exec { "/bin/sed -i -e 's/socket-binding name=\"https\" port=\"[0-9]\\+\"/socket-binding name=\"https\" port=\"${https_port}\"/' standalone/configuration/standalone.xml":
 		user => 'jbossas',
 		cwd => $dir,
 		logoutput => true,
 		require => Class['jbossas::install'],
+		unless => "/bin/grep 'socket-binding name=\"https\" port=\"${https_port}\"/' standalone/configuration/standalone.xml",
 		notify => Service['jboss-as']
 	}
 	
