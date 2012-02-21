@@ -43,13 +43,20 @@ class jbossas ($version = '7.1.0.Final',
 			ensure => present,
 			managehome => true,
 			gid => 'jbossas',
+			require => Group['jbossas'],
 			comment => 'JBoss Application Server'
+		}
+		# workaround for Puppet bug about user not added to group
+		exec { '/usr/sbin/adduser jbossas jbossas':
+			unless => "/bin/grep 'jbossas.*jbossas' /etc/group",
+			require => [ Group['jbossas'], User['jbossas'] ]
 		}
 		file { '/home/jbossas':
 			ensure => present,
 			owner => 'jbossas',
 			group => 'jbossas',
-			mode => 0775
+			mode => 0775,
+			require => [ Group['jbossas'], User['jbossas'] ]
 		}
 		
 		# Download the JBoss AS distribution ~100MB file
@@ -66,6 +73,7 @@ class jbossas ($version = '7.1.0.Final',
 			ensure => directory,
 			owner => 'jbossas', group => 'jbossas',
 			mode => 0775,
+			require => [ Group['jbossas'], User['jbossas'] ]
 		}
 		exec { extract_jboss_as:
 			command => "/bin/tar -xz -f '$dist_file'",
@@ -74,7 +82,7 @@ class jbossas ($version = '7.1.0.Final',
 			user => 'jbossas', group => 'jbossas',
 			logoutput => true,
 			unless => "/usr/bin/test -d '$jbossas::dir'",
-			require => Exec['download_jboss_as']
+			require => [ Group['jbossas'], User['jbossas'], Exec['download_jboss_as'] ]
 		}
 		exec { move_jboss_home:
 			command => "/bin/mv -v '/home/jbossas/jboss-as-${jbossas::version}' '${jbossas::dir}'",
@@ -85,7 +93,7 @@ class jbossas ($version = '7.1.0.Final',
 		file { "$jbossas::dir":
 			ensure => directory,
 			owner => 'jbossas', group => 'jbossas',
-			require => Exec['move_jboss_home']
+			require => [ Group['jbossas'], User['jbossas'], Exec['move_jboss_home'] ]
 		}
 		
 	}
