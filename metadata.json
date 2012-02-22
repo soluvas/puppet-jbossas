@@ -11,7 +11,7 @@
     "Modulefile": "c81d5d1317a3f74f39d13a6c11422655",
     "README.textile": "08ed188e78ae9fedc50054f9bbadbc59",
     "files/init.d/jboss-as-standalone.sh": "8550d91aa6a98124b9dc653fde6f7b20",
-    "manifests/init.pp": "6095306b96c2782786e3c8405c8a9aae",
+    "manifests/init.pp": "06e837a12d619099ac2aea8c6dc8957d",
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
     "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
     "templates/jboss-as.conf.erb": "37b106ea42a34845edea7c401b01c261",

@@ -46,11 +46,6 @@ class jbossas ($version = '7.1.0.Final',
 			require => Group['jbossas'],
 			comment => 'JBoss Application Server'
 		}
-		# workaround for Puppet bug about user not added to group
-		exec { '/usr/sbin/adduser jbossas jbossas':
-			unless => "/bin/grep 'jbossas.*jbossas' /etc/group",
-			require => [ Group['jbossas'], User['jbossas'] ]
-		}
 		file { '/home/jbossas':
 			ensure => present,
 			owner => 'jbossas',
