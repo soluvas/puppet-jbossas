@@ -17,11 +17,11 @@ h2. Usage
 Typical production settings:
 
 bc. 
-package { openjdk-7-jre-headless: ensure => installed }
-class { jbossas:
-	bind_address => '0.0.0.0'
-}
-Package['openjdk-7-jre-headless'] -> Class['jbossas']
+  package { openjdk-7-jre-headless: ensure => installed }
+  class { jbossas:
+    bind_address => '127.0.0.1',
+  }
+  Package['openjdk-7-jre-headless'] -> Class['jbossas']
 
 Typical development settings:
 
