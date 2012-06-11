@@ -149,7 +149,7 @@ class jbossas (
   service { jboss-as:
     enable => $enable_service,
     ensure => $enable_service ? { true => running, default => undef },
-    require => [ Class['jbossas::install'], Exec['jbossas_http_port'], Exec['jbossas_https_port'] ]
+    require => [ Class['jbossas::initd'], Exec['jbossas_http_port'], Exec['jbossas_https_port'] ]
   }
   
   define virtual_server($default_web_module = '',
