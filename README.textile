@@ -30,8 +30,8 @@ class { jbossas: }
 
 Available parameters and their default values:
 
-* @version@ = '7.1.0.Final'
-* @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
+* @version@ = '7.1.1.Final'
+* @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/'
 * @bind_address@ = '127.0.0.1'
 * @http_port@ = 8080
 * @https_port@ = 8443

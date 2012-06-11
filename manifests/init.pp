@@ -3,8 +3,8 @@
 # This module manages JBoss Application Server 7.x
 #
 # Parameters:
-# * @version@ = '7.1.0.Final'
-# * @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/'
+# * @version@ = '7.1.1.Final'
+# * @mirror_url@ = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/'
 # * @bind_address@ = '127.0.0.1'
 # * @http_port@ = 8080
 # * @https_port@ = 8443
@@ -17,17 +17,18 @@
 # Sample Usage:
 #
 # [Remember: No empty lines between comments and class definition]
-class jbossas ($version = '7.1.0.Final',
+class jbossas (
+  $version = '7.1.1.Final',
   # Mirror URL with trailing slash
   # Will use curl to download, so 'file:///' is also possible not just 'http://'
-  $mirror_url = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.0.Final/',
+  $mirror_url = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/',
   $bind_address = '127.0.0.1',
   $http_port = 8080,
   $https_port = 8443,
   $enable_service = true)
 {
   $dir = "/usr/share/jboss-as"
-  
+
   class install {
     $mirror_url_version = "${jbossas::mirror_url}jboss-as-${jbossas::version}.tar.gz"
     $dist_dir = '/home/jbossas/tmp'
@@ -36,7 +37,7 @@ class jbossas ($version = '7.1.0.Final',
     notice "Download URL: $mirror_url_version"
     notice "JBoss AS directory: $jbossas::dir"
   
-    # Create group, user, and home folder
+  # Create group, user, and home folder
     group { jbossas:
       ensure => present
     }
@@ -55,7 +56,7 @@ class jbossas ($version = '7.1.0.Final',
       require => [ Group['jbossas'], User['jbossas'] ]
     }
     
-    # Download the JBoss AS distribution ~100MB file
+# Download the JBoss AS distribution ~100MB file
     exec { download_jboss_as:
       command => "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'",
       creates => $dist_file,
@@ -64,7 +65,8 @@ class jbossas ($version = '7.1.0.Final',
       require => Package['curl']
     }
   
-    # Extract the JBoss AS distribution
+    #
+tract the JBoss AS distribution
     file { $dist_dir:
       ensure => directory,
       owner => 'jbossas', group => 'jbossas',
@@ -94,11 +96,13 @@ class jbossas ($version = '7.1.0.Final',
     
   }
 
-  # init.d configuration for Ubuntu
+
+nit.d configuration for Ubuntu
   class initd {
     $jbossas_bind_address = $jbossas::bind_address
     
-    file { '/etc/jboss-as':
+    file 
+tc/jboss-as':
       ensure => directory,
       owner => 'root', group => 'root'
     }
@@ -121,13 +125,17 @@ class jbossas ($version = '7.1.0.Final',
   }
   Class['install'] -> Class['initd']    
   
-  include install
-  include initd
+  include 
+ll
+ 
+clude initd
   
   # Configure
-  notice "Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
+  notic
+Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
   exec { jbossas_http_port: 
-  	command   => "/bin/sed -i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml",
+  	command   => "/bin/se
+-i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml",
     user      => 'jbossas',
     cwd       => $dir,
     logoutput => true,
@@ -146,12 +154,14 @@ class jbossas ($version = '7.1.0.Final',
   }
   
   service { jboss-as:
-    enable => $enable_service,
+  
+nable => $enable_service,
     ensure => $enable_service ? { true => running, default => undef },
     require => [ Class['jbossas::install'], Exec['jbossas_http_port'], Exec['jbossas_https_port'] ]
   }
   
-  define virtual_server($default_web_module = '',
+  define virtual_server($d
+ult_web_module = '',
     $aliases = [],
     $ensure = 'present')
   {
