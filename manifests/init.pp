@@ -28,7 +28,7 @@ class jbossas (
   $enable_service = true)
 {
   $dir = "/usr/share/jboss-as"
-
+  
   class install {
     $mirror_url_version = "${jbossas::mirror_url}jboss-as-${jbossas::version}.tar.gz"
     $dist_dir = '/home/jbossas/tmp'
@@ -37,7 +37,7 @@ class jbossas (
     notice "Download URL: $mirror_url_version"
     notice "JBoss AS directory: $jbossas::dir"
   
-  # Create group, user, and home folder
+    # Create group, user, and home folder
     group { jbossas:
       ensure => present
     }
@@ -56,7 +56,7 @@ class jbossas (
       require => [ Group['jbossas'], User['jbossas'] ]
     }
     
-# Download the JBoss AS distribution ~100MB file
+    # Download the JBoss AS distribution ~100MB file
     exec { download_jboss_as:
       command => "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'",
       creates => $dist_file,
@@ -65,8 +65,7 @@ class jbossas (
       require => Package['curl']
     }
   
-    #
-tract the JBoss AS distribution
+    # Extract the JBoss AS distribution
     file { $dist_dir:
       ensure => directory,
       owner => 'jbossas', group => 'jbossas',
@@ -96,13 +95,11 @@ tract the JBoss AS distribution
     
   }
 
-
-nit.d configuration for Ubuntu
+  # init.d configuration for Ubuntu
   class initd {
     $jbossas_bind_address = $jbossas::bind_address
     
-    file 
-tc/jboss-as':
+    file { '/etc/jboss-as':
       ensure => directory,
       owner => 'root', group => 'root'
     }
@@ -125,17 +122,13 @@ tc/jboss-as':
   }
   Class['install'] -> Class['initd']    
   
-  include 
-ll
- 
-clude initd
+  include install
+  include initd
   
   # Configure
-  notic
-Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
+  notice "Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
   exec { jbossas_http_port: 
-  	command   => "/bin/se
--i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml",
+  	command   => "/bin/sed -i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml",
     user      => 'jbossas',
     cwd       => $dir,
     logoutput => true,
@@ -154,14 +147,12 @@ Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
   }
   
   service { jboss-as:
-  
-nable => $enable_service,
+    enable => $enable_service,
     ensure => $enable_service ? { true => running, default => undef },
     require => [ Class['jbossas::install'], Exec['jbossas_http_port'], Exec['jbossas_https_port'] ]
   }
   
-  define virtual_server($d
-ult_web_module = '',
+  define virtual_server($default_web_module = '',
     $aliases = [],
     $ensure = 'present')
   {
