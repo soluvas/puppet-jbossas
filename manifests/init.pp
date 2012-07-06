@@ -28,7 +28,12 @@ class jbossas (
   $enable_service = true)
 {
   $dir = "/usr/share/jboss-as"
-  
+
+  package {
+    libtcnative-1: ensure => present;
+    libapr1:       ensure => present;
+  }
+
   class install {
     $mirror_url_version = "${jbossas::mirror_url}jboss-as-${jbossas::version}.tar.gz"
     $dist_dir = '/home/jbossas/tmp'
@@ -36,7 +41,7 @@ class jbossas (
 
     notice "Download URL: $mirror_url_version"
     notice "JBoss AS directory: $jbossas::dir"
-  
+
     # Create group, user, and home folder
     group { jbossas:
       ensure => present
@@ -55,7 +60,7 @@ class jbossas (
       mode => 0775,
       require => [ Group['jbossas'], User['jbossas'] ]
     }
-    
+
     # Download the JBoss AS distribution ~100MB file
     exec { download_jboss_as:
       command => "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'",
@@ -64,7 +69,7 @@ class jbossas (
       logoutput => true,
       require => Package['curl']
     }
-  
+
     # Extract the JBoss AS distribution
     file { $dist_dir:
       ensure => directory,
@@ -92,13 +97,13 @@ class jbossas (
       owner => 'jbossas', group => 'jbossas',
       require => [ Group['jbossas'], User['jbossas'], Exec['move_jboss_home'] ]
     }
-    
+
   }
 
   # init.d configuration for Ubuntu
   class initd {
     $jbossas_bind_address = $jbossas::bind_address
-    
+
     file { '/etc/jboss-as':
       ensure => directory,
       owner => 'root', group => 'root'
@@ -120,14 +125,14 @@ class jbossas (
       mode => 0755
     }
   }
-  Class['install'] -> Class['initd']    
-  
+  Class['install'] -> Class['initd']
+
   include install
   include initd
-  
+
   # Configure
   notice "Bind address: $bind_address - HTTP Port: $http_port - HTTPS Port: $https_port"
-  exec { jbossas_http_port: 
+  exec { jbossas_http_port:
   	command   => "/bin/sed -i -e 's/socket-binding name=\"http\" port=\"[0-9]\\+\"/socket-binding name=\"http\" port=\"${http_port}\"/' standalone/configuration/standalone.xml",
     user      => 'jbossas',
     cwd       => $dir,
@@ -145,13 +150,14 @@ class jbossas (
     unless    => "/bin/grep 'socket-binding name=\"https\" port=\"${https_port}\"/' standalone/configuration/standalone.xml",
     notify    => Service['jboss-as']
   }
-  
+
   service { jboss-as:
     enable => $enable_service,
     ensure => $enable_service ? { true => running, default => undef },
-    require => [ Class['jbossas::initd'], Exec['jbossas_http_port'], Exec['jbossas_https_port'] ]
+    require => [ Class['jbossas::initd'], Exec['jbossas_http_port', 'jbossas_https_port'],
+                 Package['libtcnative-1', 'libapr1'] ]
   }
-  
+
   define virtual_server($default_web_module = '',
     $aliases = [],
     $ensure = 'present')
