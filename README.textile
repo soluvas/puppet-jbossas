@@ -10,7 +10,8 @@ h2. Installation
 h2. Dependencies
 
 * @Package['curl']@
-* JRE runtimeh
+* @Package['daemon']@
+* JRE runtime
 
 h2. Usage
 
