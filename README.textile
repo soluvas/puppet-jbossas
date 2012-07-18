@@ -18,7 +18,11 @@ h2. Usage
 Typical production settings:
 
 bc. 
-  package { openjdk-7-jre-headless: ensure => installed }
+  package {
+    curl:                   ensure => present;
+    daemon:                 ensure => present;
+    openjdk-7-jre-headless: ensure => present;
+  }
   class { jbossas:
     bind_address => '127.0.0.1',
   }
