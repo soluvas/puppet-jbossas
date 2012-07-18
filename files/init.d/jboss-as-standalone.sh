@@ -57,11 +57,11 @@ prog='jboss-as'
 CMD_PREFIX=''
 
 if [ ! -z "$JBOSS_USER" ]; then
-#  if [ -x /etc/rc.d/init.d/functions ]; then
+  if [ -x /etc/rc.d/init.d/functions ]; then
     CMD_PREFIX="daemon --user $JBOSS_USER"
-#  else
-#    CMD_PREFIX="su - $JBOSS_USER -c"
-#  fi
+  else
+    CMD_PREFIX="su - $JBOSS_USER -c"
+  fi
 fi
 
 start() {
@@ -90,10 +90,11 @@ start() {
 
   if [ ! -z "$JBOSS_USER" ]; then
 #    if [ -x /etc/rc.d/init.d/functions ]; then
-      daemon --user $JBOSS_USER LAUNCH_JBOSS_IN_BACKGROUND=1 JBOSS_PIDFILE=$JBOSS_PIDFILE $JBOSS_SCRIPT -c $JBOSS_CONFIG -b $JBOSS_BIND_ADDRESS 2>&1 > $JBOSS_CONSOLE_LOG &
+#      daemon --user $JBOSS_USER LAUNCH_JBOSS_IN_BACKGROUND=1 JBOSS_PIDFILE=$JBOSS_PIDFILE $JBOSS_SCRIPT -c $JBOSS_CONFIG -b $JBOSS_BIND_ADDRESS 2>&1 > $JBOSS_CONSOLE_LOG &
 #    else
 #      su - $JBOSS_USER -c "LAUNCH_JBOSS_IN_BACKGROUND=1 JBOSS_PIDFILE=$JBOSS_PIDFILE $JBOSS_SCRIPT -c $JBOSS_CONFIG -b $JBOSS_BIND_ADDRESS" 2>&1 > $JBOSS_CONSOLE_LOG &
 #    fi
+     LAUNCH_JBOSS_IN_BACKGROUND=1 JBOSS_PIDFILE=$JBOSS_PIDFILE start-stop-daemon --background --chuid $JBOSS_USER --pidfile $JBOSS_PIDFILE --startas $JBOSS_SCRIPT --start -- -c $JBOSS_CONFIG -b $JBOSS_BIND_ADDRESS 2>&1 > $JBOSS_CONSOLE_LOG &
   fi
 
   count=0
@@ -125,7 +126,8 @@ stop() {
 
     # Try issuing SIGTERM
 
-    kill -15 $kpid
+    #kill -15 $kpid
+    start-stop-daemon --pidfile $JBOSS_PIDFILE --stop
     until [ `ps --pid $kpid 2> /dev/null | grep -c $kpid 2> /dev/null` -eq '0' ] || [ $count -gt $kwait ]
     do
       sleep 1
