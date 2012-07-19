@@ -68,7 +68,7 @@ class jbossas (
       creates => $dist_file,
       user => 'jbossas',
       logoutput => true,
-      require => Package['curl']
+      require => [ Package['curl'], File[$dist_dir] ]
     }
 
     # Extract the JBoss AS distribution
