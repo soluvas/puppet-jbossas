@@ -13,7 +13,6 @@
 #
 # Requires:
 # * package curl
-# * package daemon
 #
 # Sample Usage:
 #
@@ -125,7 +124,6 @@ class jbossas (
       owner   => 'root',
       group   => 'root',
       mode    => 0755,
-      require => Package['daemon'],
     }
   }
   Class['install'] -> Class['initd']
