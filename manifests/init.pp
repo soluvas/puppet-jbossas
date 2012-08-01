@@ -62,21 +62,22 @@ class jbossas (
     }
 
     # Download the JBoss AS distribution ~100MB file
+    file { $dist_dir:
+      ensure  => directory,
+      owner   => 'jbossas',
+      group   => 'jbossas',
+      mode    => 0775,
+      require => [ Group['jbossas'], User['jbossas'] ]
+    }
     exec { download_jboss_as:
-      command => "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'",
-      creates => $dist_file,
-      user => 'jbossas',
+      command   => "/usr/bin/curl -v --progress-bar -o '$dist_file' '$mirror_url_version'",
+      creates   => $dist_file,
+      user      => 'jbossas',
       logoutput => true,
-      require => Package['curl']
+      require   => [ Package['curl'], File[$dist_dir] ],
     }
 
     # Extract the JBoss AS distribution
-    file { $dist_dir:
-      ensure => directory,
-      owner => 'jbossas', group => 'jbossas',
-      mode => 0775,
-      require => [ Group['jbossas'], User['jbossas'] ]
-    }
     exec { extract_jboss_as:
       command => "/bin/tar -xz -f '$dist_file'",
       creates => "/home/jbossas/jboss-as-${jbossas::version}",
