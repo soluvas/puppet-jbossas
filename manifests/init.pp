@@ -47,17 +47,17 @@ class jbossas (
       ensure => present
     }
     user { jbossas:
-      ensure => present,
+      ensure     => present,
       managehome => true,
-      gid => 'jbossas',
-      require => Group['jbossas'],
-      comment => 'JBoss Application Server'
+      gid        => 'jbossas',
+      require    => Group['jbossas'],
+      comment    => 'JBoss Application Server'
     }
     file { '/home/jbossas':
-      ensure => present,
-      owner => 'jbossas',
-      group => 'jbossas',
-      mode => 0775,
+      ensure  => present,
+      owner   => 'jbossas',
+      group   => 'jbossas',
+      mode    => 0775,
       require => [ Group['jbossas'], User['jbossas'] ]
     }
 
@@ -79,23 +79,25 @@ class jbossas (
 
     # Extract the JBoss AS distribution
     exec { extract_jboss_as:
-      command => "/bin/tar -xz -f '$dist_file'",
-      creates => "/home/jbossas/jboss-as-${jbossas::version}",
-      cwd => '/home/jbossas',
-      user => 'jbossas', group => 'jbossas',
+      command   => "/bin/tar -xz -f '$dist_file'",
+      creates   => "/home/jbossas/jboss-as-${jbossas::version}",
+      cwd       => '/home/jbossas',
+      user      => 'jbossas',
+      group     => 'jbossas',
       logoutput => true,
-      unless => "/usr/bin/test -d '$jbossas::dir'",
-      require => [ Group['jbossas'], User['jbossas'], Exec['download_jboss_as'] ]
+      unless    => "/usr/bin/test -d '$jbossas::dir'",
+      require   => [ Group['jbossas'], User['jbossas'], Exec['download_jboss_as'] ]
     }
     exec { move_jboss_home:
-      command => "/bin/mv -v '/home/jbossas/jboss-as-${jbossas::version}' '${jbossas::dir}'",
-      creates => $jbossas::dir,
+      command   => "/bin/mv -v '/home/jbossas/jboss-as-${jbossas::version}' '${jbossas::dir}'",
+      creates   => $jbossas::dir,
       logoutput => true,
-      require => Exec['extract_jboss_as']
+      require   => Exec['extract_jboss_as']
     }
     file { "$jbossas::dir":
-      ensure => directory,
-      owner => 'jbossas', group => 'jbossas',
+      ensure  => directory,
+      owner   => 'jbossas',
+      group   => 'jbossas',
       require => [ Group['jbossas'], User['jbossas'], Exec['move_jboss_home'] ]
     }
 
@@ -107,18 +109,22 @@ class jbossas (
 
     file { '/etc/jboss-as':
       ensure => directory,
-      owner => 'root', group => 'root'
+      owner  => 'root',
+      group  => 'root'
     }
     file { '/etc/jboss-as/jboss-as.conf':
       content => template('jbossas/jboss-as.conf.erb'),
-      owner => 'root', group => 'root',
-      mode => 0644,
-      require => File['/etc/jboss-as']
+      owner   => 'root',
+      group   => 'root',
+      mode    => 0644,
+      require => File['/etc/jboss-as'],
+      notify  => Service['jboss-as'],
     }
     file { '/var/run/jboss-as':
       ensure => directory,
-      owner => 'jbossas', group => 'jbossas',
-      mode => 0775
+      owner  => 'jbossas',
+      group  => 'jbossas',
+      mode   => 0775
     }
     file { '/etc/init.d/jboss-as':
       source  => 'puppet:///modules/jbossas/init.d/jboss-as-standalone.sh',
