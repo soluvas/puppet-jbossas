@@ -18,20 +18,23 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class jbossas (
-  $version = '7.1.1.Final',
+  $version        = '7.1.1.Final',
   # Mirror URL with trailing slash
   # Will use curl to download, so 'file:///' is also possible not just 'http://'
-  $mirror_url = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/',
-  $bind_address = '127.0.0.1',
-  $http_port = 8080,
-  $https_port = 8443,
-  $enable_service = true)
+  $mirror_url     = 'http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/',
+  $bind_address   = '127.0.0.1',
+  $http_port      = 8080,
+  $https_port     = 8443,
+  $enable_service = true,
+  $tcnative       = true)
 {
   $dir = "/usr/share/jboss-as"
 
-  package {
-    libtcnative-1: ensure => present;
-    libapr1:       ensure => present;
+  if $tcnative == true {
+    package {
+      libtcnative-1: ensure => present;
+      libapr1:       ensure => present;
+    }
   }
 
   class install {
